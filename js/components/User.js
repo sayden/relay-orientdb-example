@@ -1,9 +1,9 @@
+import Hobby from './Hobby.js';
+
 class User extends React.Component {
   render() {
-    console.log("User", this.props.relay);
-    console.log("User", this.props);
     var user = this.props.users;
-    console.log("User", user);
+    console.log(user);
 
     return (
       <div>
@@ -11,12 +11,7 @@ class User extends React.Component {
         <h2>Hobbies</h2>
         <ul>
         {user.hobbies.map(hobby => {
-            return <li>
-                      Hobby name: {hobby.title}
-                      <ul>
-                        <li>Description: {hobby.description}</li>
-                      </ul>
-                   </li>;
+            return <Hobby hobby={hobby} />;
           })}
         </ul>
         <h2>Age: {user.age}</h2>
@@ -32,11 +27,8 @@ export default Relay.createContainer(User, {
         name,
         surname,
         age,
-        hobbies {
-          title
-          description
-        }
-      },
-    `,
+        ${Hobby.getFragment('hobby')},
+      }
+    `
   }
 });

@@ -12,16 +12,6 @@ import HobbyType from './HobbyTypeQL.es6';
 import Hobby from './HobbySchema.es6';
 
 export default {
-  hobbies: {
-    type: HobbyType,
-    resolve: () => {
-      return new Promise((resolve, reject) => {
-        Hobby.find({}, (err, res) => {
-          err ? reject(err) : resolve(res.hobbies);
-        });
-      });
-    }
-  },
   hobby: {
     type: HobbyType,
     args: {
@@ -31,9 +21,20 @@ export default {
     },
     resolve: (root, {id}) => {
       return new Promise((resolve, reject) => {
-        //User is a Mongoose schema
+        //Hobby is a Mongoose schema
+        Hobby.findById(id).exec((err, res) => {
+          err ? reject(err) : resolve(res);
+        });
+      });
+    }
+  },
+
+  hobbies: {
+    type: HobbyType,
+    resolve: () => {
+      return new Promise((resolve, reject) => {
         Hobby.find({}, (err, res) => {
-            err ? reject(err) : resolve(res[id]);
+          err ? reject(err) : resolve(res);
         });
       });
     }

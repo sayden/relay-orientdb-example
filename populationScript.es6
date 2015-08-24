@@ -61,7 +61,7 @@ userUla.friends = [userMario, userOla, userRocco];
 userMario.friends = [userUla, userOla, userRocco];
 userRocco.friends = [userMario, userUla];
 
-if(false){
+if(true){
   hobbyCycling.save();
   hobbyFlying.save();
   hobbyHorses.save();
@@ -73,6 +73,8 @@ if(false){
   userOla.save();
 }
 
-User.update({_id:"55da2995e7f5581b3698f410"}, {age:26}, (err, res) => {
-  console.log(err, res);
-});
+if(false){
+  User.update({_id:"55da2995e7f5581b3698f410"}, {age:26}, (err, res) => {
+    console.log(err, res);
+  });
+}
