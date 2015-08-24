@@ -3,7 +3,9 @@ import graphQLHTTP from 'express-graphql';
 import path from 'path';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import {Schema} from './data/schema';
+import Schema from './data/schema.es6';
+
+import mongoose from 'mongoose';
 
 const APP_PORT = 3000;
 const GRAPHQL_PORT = 8080;
@@ -11,9 +13,10 @@ const GRAPHQL_PORT = 8080;
 // Expose a GraphQL endpoint
 var graphQLServer = express();
 graphQLServer.use('/', graphQLHTTP({schema: Schema, pretty: true}));
-graphQLServer.listen(GRAPHQL_PORT, () => console.log(
-  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}`
-));
+graphQLServer.listen(GRAPHQL_PORT, () => {
+  console.log(`GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}`);
+  mongoose.connect('mongodb://localhost/test');
+});
 
 // Serve the Relay app
 var compiler = webpack({
@@ -35,6 +38,7 @@ var app = new WebpackDevServer(compiler, {
   publicPath: '/js/',
   stats: {colors: true}
 });
+
 // Serve static resources
 app.use('/', express.static('public'));
 app.use('/node_modules/react', express.static('node_modules/react'));
