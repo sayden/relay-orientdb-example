@@ -3,7 +3,7 @@ import HobbyList from './HobbyList.js';
 class User extends React.Component {
   render() {
     var user = this.props.users;
-    console.log(user);
+    
     return (
       <div>
         <h1>Hello {user.name} {user.surname}</h1>
