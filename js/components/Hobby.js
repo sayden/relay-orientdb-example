@@ -1,6 +1,6 @@
 class Hobby extends React.Component {
   render() {
-    let hobby = this.props.hobbies;
+    let hobby = this.props.hobby;
     return(
       <li>
         {hobby.title}
@@ -13,7 +13,7 @@ class Hobby extends React.Component {
 
 export default Relay.createContainer(Hobby, {
   fragments: {
-    hobbies: () => Relay.QL`
+    hobby: () => Relay.QL`
       fragment on Hobby {
         title
         description

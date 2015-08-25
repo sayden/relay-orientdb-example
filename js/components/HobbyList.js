@@ -4,7 +4,7 @@ class HobbyList extends React.Component {
   render() {
     let user = this.props.users;
     let hobbies = user.hobbies.map((hobby) => {
-      return <Hobby hobbies={hobby} />;
+      return <Hobby hobby={hobby} />;
     });
 
     return(<li>{hobbies}</li>);
@@ -16,7 +16,7 @@ export default Relay.createContainer(HobbyList, {
     users: () => Relay.QL`
       fragment users on User {
         hobbies {
-          ${Hobby.getFragment('hobbies')}
+          ${Hobby.getFragment('hobby')}
         }
       }`
   }
