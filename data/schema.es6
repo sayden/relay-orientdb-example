@@ -16,26 +16,30 @@ import {
 import {
   HobbyType,
   HobbyQueries,
-  HobbyMutations,
+  HobbyMutations
   } from './Models/Hobby/HobbyQL.es6';
 
 
+import {
+  nodeField
+  } from './Models/NodeInterface.es6';
+
 let RootQuery = new GraphQLObjectType({
   name: 'RootQuery',      //Return this type of object
+
   fields: () => ({
     user: UserQueries.user,
     users: UserQueries.users,
-    hobby: HobbyQueries.hobby,
-    hobbies: HobbyQueries.hobbies
+    node: nodeField
   })
 });
 
 
 let RootMutation = new GraphQLObjectType({
   name: "RootMutation",
+
   fields: () => ({
     addUser: UserMutations.addUser,
-    addHobby: HobbyMutations.addHobby,
     updateUser: UserMutations.updateUser
   })
 });

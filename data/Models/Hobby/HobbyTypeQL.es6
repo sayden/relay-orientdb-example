@@ -8,7 +8,10 @@ import {
   GraphQLID
   } from 'graphql';
 
-import Hobby from './HobbySchema.es6';
+import {
+  nodeInterface,
+  Node
+  } from '../NodeInterface.es6';
 
 export default new GraphQLObjectType({
   name: 'Hobby',
@@ -18,10 +21,12 @@ export default new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLID)
     },
     title: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
     },
     description:{
       type: GraphQLString
     }
-  })
+  }),
+
+  interfaces:[Node]
 });

@@ -27,11 +27,11 @@ export default {
   user: {
     type: UserType,
     args: {
-      id: {
+      _id: {
         type: GraphQLID
       }
     },
-    resolve: (root, {id}) => {
+    resolve: (root, {_id}) => {
       return new Promise((resolve, reject) => {
         //User is a Mongoose schema
         User.findById(id).populate('hobbies friends').exec((err, res) => {

@@ -15,18 +15,19 @@ export default {
   hobby: {
     type: HobbyType,
     args: {
-      id: {
+      _id: {
         type: GraphQLID
       }
     },
-    resolve: (root, {id}) => {
+    resolve: (root, {_id}) => {
       return new Promise((resolve, reject) => {
         //Hobby is a Mongoose schema
         Hobby.findById(id).exec((err, res) => {
           err ? reject(err) : resolve(res);
         });
       });
-    }
+    },
+    resolveType:HobbyType
   },
 
   hobbies: {

@@ -5,9 +5,10 @@ import path from 'path';
 import Schema from '../data/schema.es6';
 import { graphql }  from 'graphql';
 import { introspectionQuery } from 'graphql/utilities';
+import { query } from './debugQuery.js';
 
 async () => {
-  var result = await (graphql(Schema, introspectionQuery));
+  var result = await (graphql(Schema, query));
   if (result.errors) {
     console.error('ERROR: ', JSON.stringify(result.errors, null, 2));
   } else {

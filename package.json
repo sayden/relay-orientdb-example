@@ -6,7 +6,9 @@
   "version": "0.1.0",
   "scripts": {
     "start": "babel-node ./server.js",
-    "update-schema": "babel-node ./scripts/updateSchema.js"
+    "update-schema": "babel-node ./scripts/updateSchema.js",
+    "print-schema": "babel-node ./scripts/printSchema.js",
+    "print-introspection": "babel-node ./scripts/printIntrospection.js"
   },
   "dependencies": {
     "babel": "5.8.21",

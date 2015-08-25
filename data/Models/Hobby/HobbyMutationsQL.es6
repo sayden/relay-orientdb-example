@@ -32,6 +32,7 @@ export default {
           err ? reject(err): resolve(res);
         });
       });
-    }
+    },
+    resolveType:HobbyType
   }
 };

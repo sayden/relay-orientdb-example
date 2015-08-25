@@ -36,7 +36,8 @@ export default {
           err ? reject(err): resolve(res);
         });
       });
-    }
+    },
+    resolveType:UserType
   },
   updateUser:{
     type:UserType,
