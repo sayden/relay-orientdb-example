@@ -10,7 +10,8 @@
     "print-schema": "babel-node ./scripts/printSchema.js",
     "print-introspection": "babel-node ./scripts/printIntrospection.js",
     "restart": "babel-node ./scripts/updateSchema.js; babel-node ./server.js",
-    "populate": "babel-node ./populationScript.es6"
+    "populate": "babel-node ./populationScript.es6",
+    "test":"mocha --compilers js:babel/register"
   },
   "dependencies": {
     "babel": "5.8.21",
@@ -26,5 +27,9 @@
     "react-relay": "^0.1.0",
     "webpack": "^1.10.5",
     "webpack-dev-server": "^1.10.1"
+  },
+  "devDependencies": {
+    "chai": "~3.2.0",
+    "mocha": "~2.2.5"
   }
 }

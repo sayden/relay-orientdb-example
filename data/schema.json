@@ -193,7 +193,7 @@
             },
             {
               "name": "hobbies",
-              "description": null,
+              "description": "The ships used by the faction.",
               "args": [],
               "type": {
                 "kind": "LIST",
@@ -275,12 +275,12 @@
           "possibleTypes": [
             {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "Hobby",
               "ofType": null
             },
             {
               "kind": "OBJECT",
-              "name": "Hobby",
+              "name": "User",
               "ofType": null
             }
           ]

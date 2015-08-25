@@ -13,6 +13,10 @@ import {
   GraphQLInt
   } from 'graphql';
 
+import {
+  connectionArgs,
+  connectionDefinitions
+  } from 'graphql-relay';
 
 let replaceId = (array) => {
   if(array instanceof Array){
@@ -49,6 +53,30 @@ let Node = new GraphQLInterfaceType({
   }
 });
 
+let HobbyType = new GraphQLObjectType({
+  name: 'Hobby',
+  description: 'A hobby',
+  fields: () => ({
+    id: {
+      type: new GraphQLNonNull(GraphQLID)
+    },
+    title: {
+      type: GraphQLString
+    },
+    description:{
+      type: GraphQLString
+    },
+    type:{
+      type: new GraphQLNonNull(GraphQLString)
+    }
+  }),
+
+  interfaces:[Node]
+});
+
+let {connectionType: hobbyConnection} =
+  connectionDefinitions({name: 'Hobby', nodeType: HobbyType});
+
 let UserType = new GraphQLObjectType({
   name: 'User',
   description: 'A user',
@@ -66,28 +94,8 @@ let UserType = new GraphQLObjectType({
       type: GraphQLInt
     },
     hobbies:{
-      type: new GraphQLList(HobbyType)
-    },
-    type:{
-      type: new GraphQLNonNull(GraphQLString)
-    }
-  }),
-
-  interfaces:[Node]
-});
-
-let HobbyType = new GraphQLObjectType({
-  name: 'Hobby',
-  description: 'A hobby',
-  fields: () => ({
-    id: {
-      type: new GraphQLNonNull(GraphQLID)
-    },
-    title: {
-      type: GraphQLString
-    },
-    description:{
-      type: GraphQLString
+      type: new GraphQLList(HobbyType),
+      description: 'The ships used by the faction.'
     },
     type:{
       type: new GraphQLNonNull(GraphQLString)
@@ -112,10 +120,10 @@ let nodeField =  {
         User.findById(id).exec((err, res) => {
           if (res == null){
             Hobby.findById(id).exec((err, res) => {
-              err ? reject(err) : resolve(replaceId(res));
+              err ? reject(err) : resolve(res);
             });
           } else {
-            err ? reject(err) : resolve(replaceId(res));
+            err ? reject(err) : resolve(res);
           }
         });
     });
@@ -130,14 +138,6 @@ let UserQueries = {
     resolve: () => {
       return new Promise((resolve, reject) => {
         User.find({}).populate('hobbies friends').exec((err, res) => {
-          res = replaceId(res);
-
-          if(res.hobbies){
-            res.hobbies = replaceId(res.hobbies);
-          } else {
-            console.log(res);
-          }
-
           err ? reject(err) : resolve(res);
         });
       });
@@ -154,9 +154,6 @@ let UserQueries = {
       return new Promise((resolve, reject) => {
         //User is a Mongoose schema
         User.findById(id).populate('hobbies friends').exec((err, res) => {
-          //TODO Fix with recursive function
-          res = replaceId(res);
-          res.hobbies = replaceId(res.hobbies);
           err ? reject(err) : resolve(res);
         });
       });
@@ -177,7 +174,7 @@ let HobbyQueries = {
       return new Promise((resolve, reject) => {
         //Hobby is a Mongoose schema
         Hobby.findById(id).exec((err, res) => {
-          err ? reject(err) : resolve(replaceId(res));
+          err ? reject(err) : resolve(res);
         });
       });
     }
@@ -189,7 +186,7 @@ let HobbyQueries = {
       console.log('Running hobbies query');
       return new Promise((resolve, reject) => {
         Hobby.find({}).exec((err, res) => {
-          res = replaceId(res);
+          res = res;
           err ? reject(err) : resolve(res);
         });
       });
@@ -219,7 +216,7 @@ let UserMutations = {
 
       return new Promise((resolve, reject) => {
         newUser.save((err, res) => {
-          err ? reject(err): resolve(replaceId(res));
+          err ? reject(err): resolve(res);
         });
       });
     },
@@ -253,7 +250,7 @@ let UserMutations = {
       return new Promise((resolve, reject) => {
         User.update({id:id}, modify, (err, res) =>{
           User.findOne({id:id}, (err, res) => {
-            err ? reject(err): resolve(replaceId(res));
+            err ? reject(err): resolve(res);
           });
         });
       });
@@ -280,7 +277,7 @@ let HobbyMutations = {
 
       return new Promise((resolve, reject) => {
         newHobby.save((err, res) => {
-          err ? reject(err): resolve(replaceId(res));
+          err ? reject(err): resolve(res);
         });
       });
     },

@@ -1,4 +1,4 @@
-import Hobby from './Hobby.js';
+import HobbyList from './HobbyList.js';
 
 class User extends React.Component {
   render() {
@@ -9,9 +9,7 @@ class User extends React.Component {
         <h1>Hello {user.name} {user.surname}</h1>
         <h2>Hobbies</h2>
         <ul>
-        {user.hobbies.map(hobby => {
-            return <Hobby hobby={hobby} />;
-          })}
+        <HobbyList users={user} />
         </ul>
         <h2>Age: {user.age}</h2>
       </div>
@@ -27,7 +25,7 @@ export default Relay.createContainer(User, {
         name
         surname
         age
-        ${Hobby.getFragment('hobbies')}
+        ${HobbyList.getFragment('users')}
       }
     `
   }

@@ -1,25 +1,22 @@
 class Hobby extends React.Component {
   render() {
-    let hobby = this.props.hobby;
-
+    let hobby = this.props.hobbies;
     return(
       <li>
-        Hobby name: {hobby.title}
+        {hobby.title}
         <ul>
-          <li>Description: {hobby.description}</li>
+          <li>{hobby.description}</li>
         </ul>
-      </li>
-    );
+      </li>);
   }
 }
 
 export default Relay.createContainer(Hobby, {
   fragments: {
     hobbies: () => Relay.QL`
-      fragment on User @relay(plural:true){
-        hobbies {
-          title
-        }
+      fragment on Hobby {
+        title
+        description
       }`
   }
 });

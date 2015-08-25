@@ -5,8 +5,6 @@ import Hobby from './data/Models/Hobby/HobbySchema.es6';
 
 mongoose.connect('mongodb://localhost/test');
 
-
-
 let hobbyCycling = new Hobby({
   title:'cycling',
   description:'a painful sport',
