@@ -4,7 +4,7 @@ import AppHomeRoute from './routes/AppHomeRoute';
 React.render(
   <Relay.RootContainer
     Component={User}
-    route={new AppHomeRoute({userId: "55db27b18809ab5a24752fbd"})}
+    route={new AppHomeRoute({userId: "55dc777a00df3f1752a4ac74"})}
   />,
   document.getElementById('root')
 );

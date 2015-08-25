@@ -4,7 +4,6 @@ class User extends React.Component {
   render() {
     var user = this.props.users;
     console.log(user);
-
     return (
       <div>
         <h1>Hello {user.name} {user.surname}</h1>
@@ -24,10 +23,11 @@ export default Relay.createContainer(User, {
   fragments: {
     users: () => Relay.QL`
       fragment on User {
-        name,
-        surname,
-        age,
-        ${Hobby.getFragment('hobby')},
+        id
+        name
+        surname
+        age
+        ${Hobby.getFragment('hobbies')}
       }
     `
   }

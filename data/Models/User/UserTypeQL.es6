@@ -10,10 +10,7 @@ import {
 
 import User from './UserSchema.es6';
 import HobbyType from '../Hobby/HobbyTypeQL.es6';
-import {
-  nodeInterface,
-  Node
-  } from '../NodeInterface.es6';
+import Node from '../NodeInterface.es6';
 
 export default new GraphQLObjectType({
   name: 'User',

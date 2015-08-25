@@ -9,7 +9,6 @@ import {
   } from 'graphql';
 
 import {
-  nodeInterface,
   Node
   } from '../NodeInterface.es6';
 

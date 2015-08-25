@@ -8,7 +8,9 @@
     "start": "babel-node ./server.js",
     "update-schema": "babel-node ./scripts/updateSchema.js",
     "print-schema": "babel-node ./scripts/printSchema.js",
-    "print-introspection": "babel-node ./scripts/printIntrospection.js"
+    "print-introspection": "babel-node ./scripts/printIntrospection.js",
+    "restart": "babel-node ./scripts/updateSchema.js; babel-node ./server.js",
+    "populate": "babel-node ./populationScript.es6"
   },
   "dependencies": {
     "babel": "5.8.21",

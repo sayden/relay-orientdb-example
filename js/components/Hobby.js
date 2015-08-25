@@ -15,13 +15,11 @@ class Hobby extends React.Component {
 
 export default Relay.createContainer(Hobby, {
   fragments: {
-    hobby: () => Relay.QL`
-      fragment hobby on User {
+    hobbies: () => Relay.QL`
+      fragment on User @relay(plural:true){
         hobbies {
-          title,
-          description,
-        },
-      }
-    `
+          title
+        }
+      }`
   }
 });

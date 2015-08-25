@@ -14,20 +14,10 @@ import {
   GraphQLID
   } from 'graphql';
 
-import {
-  UserQueries,
-  UserMutations,
-  UserType
-  } from './User/UserQL.es6';
+import UserType from './User/UserTypeQL.es6';
+import HobbyType from './Hobby/HobbyTypeQL.es6';
 
-import {
-  HobbyType,
-  HobbyQueries,
-  HobbyMutations,
-  } from './Hobby/HobbyQL.es6';
 
-import User from './User/UserSchema.es6';
-import Hobby from './Hobby/HobbySchema.es6';
 
 /*
 var {nodeInterface, nodeField} = nodeDefinitions(
@@ -56,7 +46,7 @@ var {nodeInterface, nodeField} = nodeDefinitions(
 );
 */
 
-var Node = new GraphQLInterfaceType({
+let _Node = new GraphQLInterfaceType({
   name:'Node',
   description:'An object with an ID',
   fields: () => ({
@@ -69,9 +59,9 @@ var Node = new GraphQLInterfaceType({
   resolveType:UserType
 });
 
-let nodeField =  {
+let _nodeField =  {
   name:'Node',
-  type:Node,
+  type:_Node,
   description:'A node interface field',
   args:{
     id:{
@@ -92,6 +82,8 @@ let nodeField =  {
   }
 };
 
-exports.nodeInterface = null;
-exports.nodeField = nodeField;
-exports.Node = Node;
+//exports.nodeInterface = null;
+module.exports.nodeField = _nodeField;
+//exports.Node = Node;
+
+module.exports.Node = _Node;

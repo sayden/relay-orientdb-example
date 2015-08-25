@@ -2,12 +2,12 @@ class AppHomeRoute extends Relay.Route {
   static path = '/';
 
   static queries = {
-    users: (Component) => Relay.QL`
+    users: (Component) => Relay.QL `
       query {
-        user (id:$userId) {
+        user (id: $userId) {
           ${Component.getFragment('users')}
-        },
-      },
+        }
+      }
     `
   };
 
