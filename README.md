@@ -59,11 +59,11 @@ type User implements Node {
 As you can see, there is a hobby and user types that implements the node interface. Then you can find 5 queries:
 
 ### Queries
-1. ***user(id: ID): User*** that needs the MongoDB *_id* as id parameter to recover that particular user.
-2. ***users: [User]*** that returns the array of users in the ddbb
-3. ***hobby(id: ID): Hobby*** returns a hobby by its ID
-4. ***hobbies: [Hobby]*** returns the list of hobbies
-5. ***node(id: ID!): Node*** returns a node, user or hobby, of the corresponding ID. Node will only return common parameters so
+1. **`user(id: ID): User`** that needs the MongoDB *_id* as id parameter to recover that particular user.
+2. **`users: [User]`** that returns the array of users in the ddbb
+3. **`hobby(id: ID): Hobby`** returns a hobby by its ID
+4. **`hobbies: [Hobby]`** returns the list of hobbies
+5. **`node(id: ID!): Node`** returns a node, user or hobby, of the corresponding ID. Node will only return common parameters so
 the following query:
 ```graphql
 query query {
@@ -117,12 +117,12 @@ Will return
 ```
 
 ### Mutations
-1. ***addUser(name: String!, surname: String!, age: Int): User*** adds a user and accepts the 3 params:
-  * *name* as non null(!) string. For example: `"Linus"`
-  * *surname*  as non null string. For example: `"Torvalds"`
-  * *age* as optional int. For example: `30`
-2. ***updateUser(id: ID, name: String, surname: String, age: Int): User***
-3. ***addHobby(title: String!, description: String!): Hobby***
+1. **`addUser(name: String!, surname: String!, age: Int): User`** adds a user and accepts the 3 params:
+  * *`name`* as non null(!) string. For example: `"Linus"`
+  * *`surname`*  as non null string. For example: `"Torvalds"`
+  * *`age`* as optional int. For example: `30`
+2. **`updateUser(id: ID, name: String, surname: String, age: Int): User`**
+3. **`addHobby(title: String!, description: String!): Hobby`**
 
 ## Writing the schema
 
@@ -248,8 +248,8 @@ let UserQueries = {
 };
 ```
 As we metioned before, we have 2 queries: user and users.
-1. ***users*** do not accepts arguments and returns a list of users `new GraphQLList(UserType)`. Resolve makes the query on MongoDB using Mongoose and returns the list of users as a Promise.
-2. ***user*** needs one argument: the mongodb id to query. Returns a UserType and it's resolve method returns a promise with the content of the user
+1. **users** do not accepts arguments and returns a list of users `new GraphQLList(UserType)`. Resolve makes the query on MongoDB using Mongoose and returns the list of users as a Promise.
+2. **user** needs one argument: the mongodb id to query. Returns a UserType and it's resolve method returns a promise with the content of the user
 
 ```javascript
 let HobbyQueries = {
@@ -286,8 +286,8 @@ let HobbyQueries = {
 };
 ```
 Hobbies queries are pretty similar to user queries:
-1. ***hobbies*** do not accepts arguments and returns a list of users `new GraphQLList(HobbyType)`. Resolve makes the query on MongoDB using Mongoose and returns the list of hobbies as a Promise.
-2. ***hobby*** needs one argument: the mongodb id to query. Returns a HobbyType and it's resolve method returns a promise with the content of the hobby
+1. **hobbies** do not accepts arguments and returns a list of users `new GraphQLList(HobbyType)`. Resolve makes the query on MongoDB using Mongoose and returns the list of hobbies as a Promise.
+2. **hobby** needs one argument: the mongodb id to query. Returns a HobbyType and it's resolve method returns a promise with the content of the hobby
 
 ### Declaring RootQuery
 ```javascript
@@ -415,3 +415,6 @@ You can continue nesting fragments that the parent component will receive via it
 Please feel free to help, specially with grammar mistakes as english is not my mother language and I learned it watching "Two and a half men" :)
 
 Any other contribution must be on the road of simplicity to understand and to help others to learn Relay. Contributions must have a README file associated or to update this.
+
+##### Contact
+Mario C. mariocaster@gmail.com
