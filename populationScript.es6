@@ -30,42 +30,42 @@ let hobbySleeping = new Hobby({
 });
 
 
-let userMario = new User({
-  name:"Mario",
-  surname:"Castro",
+let userRichard = new User({
+  name:"Richard",
+  surname:"Stallman",
   age:30,
   hobbies:[hobbyCycling, hobbyFlying],
   type:"user"
 });
 
-let userUla = new User({
-  name:"Ula",
-  surname:"Kornowska",
+let userDonald = new User({
+  name:"Donald",
+  surname:"Knuth",
   age:26,
   hobbies:[hobbyHorses, hobbySleeping],
   type:"user"
 });
 
-let userRocco = new User({
-  name:"Rocco",
-  surname:"Artemisa",
+let userLinus = new User({
+  name:"Linux",
+  surname:"Torvalds",
   age:8,
   hobbies:[hobbySleeping],
   type:"user"
 });
 
-let userOla = new User({
-  name:"Ola",
-  surname:"SomePolish",
+let userTim = new User({
+  name:"Tim",
+  surname:"Berners-Lee",
   age:2,
   hobbies:[hobbySleeping, hobbyHorses],
-  friends:[userMario, userUla],
+  friends:[userRichard, userDonald],
   type:"user"
 });
 
-userUla.friends = [userMario, userOla, userRocco];
-userMario.friends = [userUla, userOla, userRocco];
-userRocco.friends = [userMario, userUla];
+userDonald.friends = [userRichard, userTim, userLinus];
+userRichard.friends = [userDonald, userTim, userLinus];
+userLinus.friends = [userRichard, userDonald];
 
 if(true){
   hobbyCycling.save();
@@ -73,20 +73,8 @@ if(true){
   hobbyHorses.save();
   hobbySleeping.save();
 
-  userMario.save();
-  userUla.save();
-  userRocco.save();
-  userOla.save();
-}
-
-if(false){
-  User.update({_id:"55da2995e7f5581b3698f410"}, {age:26}, (err, res) => {
-    console.log(err, res);
-  });
-}
-
-if(false){
-  User.find({}, (err, res) => {
-    console.log(res[0].id);
-  });
+  userRichard.save();
+  userDonald.save();
+  userLinus.save();
+  userTim.save();
 }
