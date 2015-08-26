@@ -62,9 +62,6 @@ let HobbyType = new GraphQLObjectType({
   interfaces:[Node]
 });
 
-let {connectionType: hobbyConnection} =
-  connectionDefinitions({name: 'Hobby', nodeType: HobbyType});
-
 let UserType = new GraphQLObjectType({
   name: 'User',
   description: 'A user',
