@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import Hobby from '../Hobby/HobbySchema.es6';
+import Hobby from './HobbySchema.es6';
 
 let UserSchema = new mongoose.Schema({
   id: { type:String, required:true, unique:true, index:true, default:mongoose.Types.ObjectId },
