@@ -9,7 +9,7 @@ class User extends React.Component {
         <h1>Hello {user.name} {user.surname}</h1>
         <h2>Hobbies</h2>
         <ul>
-        <HobbyList users={user} />
+        <HobbyList hobbies={user} />
         </ul>
         <h2>Age: {user.age}</h2>
       </div>
@@ -25,7 +25,7 @@ export default Relay.createContainer(User, {
         name
         surname
         age
-        ${HobbyList.getFragment('users')}
+        ${HobbyList.getFragment('hobbies')}
       }
     `
   }
