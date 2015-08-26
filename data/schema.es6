@@ -18,19 +18,6 @@ import {
   connectionDefinitions
   } from 'graphql-relay';
 
-let replaceId = (array) => {
-  if(array instanceof Array){
-    return array.map((element) => {
-      element.id = element._id;
-      return element;
-    });
-  } else {
-    let element = array;
-    element.id = element._id;
-    return element;
-  }
-};
-
 let Node = new GraphQLInterfaceType({
   name:'Node',
   description:'An object with an ID',
