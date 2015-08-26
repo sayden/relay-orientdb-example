@@ -7,7 +7,8 @@ class Hobby extends React.Component {
         <ul>
           <li>{hobby.description}</li>
         </ul>
-      </li>);
+      </li>
+      );
   }
 }
 

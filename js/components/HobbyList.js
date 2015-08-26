@@ -7,7 +7,7 @@ class HobbyList extends React.Component {
       return <Hobby hobby={hobby} />;
     });
 
-    return(<li>{hobbies}</li>);
+    return(<div>{hobbies}</div>);
   }
 }
 
