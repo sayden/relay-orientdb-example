@@ -10,7 +10,7 @@
     "print-schema": "babel-node ./scripts/printSchema.js",
     "print-introspection": "babel-node ./scripts/printIntrospection.js",
     "restart": "babel-node ./scripts/updateSchema.js; babel-node ./server.js",
-    "populate": "babel-node ./scripts/populationScript.es6",
+    "populate": "babel-node ./scripts/populationScript.es6"
   },
   "dependencies": {
     "babel": "5.8.21",
