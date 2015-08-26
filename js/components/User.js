@@ -2,7 +2,7 @@ import HobbyList from './HobbyList.js';
 
 class User extends React.Component {
   render() {
-    var user = this.props.users;
+    var user = this.props.user;
     
     return (
       <div>
@@ -19,7 +19,7 @@ class User extends React.Component {
 
 export default Relay.createContainer(User, {
   fragments: {
-    users: () => Relay.QL`
+    user: () => Relay.QL`
       fragment on User {
         id
         name
