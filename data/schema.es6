@@ -20,11 +20,11 @@ import {
 
 
 let Node = new GraphQLInterfaceType({
-  name:'Node',
-  description:'An object with an ID',
+  name: 'Node',
+  description: 'An object with an ID',
   fields: () => ({
     id: {
-      type:new GraphQLNonNull(GraphQLID),
+      type: new GraphQLNonNull(GraphQLID),
       description: 'The global unique ID of an object'
     },
     type: {
@@ -33,9 +33,9 @@ let Node = new GraphQLInterfaceType({
     }
   }),
   resolveType: (obj) => {
-    if(obj.type === 'user'){
+    if (obj.type === 'user') {
       return UserType;
-    } else if(obj.type === 'hobby') {
+    } else if (obj.type === 'hobby') {
       return HobbyType;
     }
   }
@@ -51,15 +51,15 @@ let HobbyType = new GraphQLObjectType({
     title: {
       type: GraphQLString
     },
-    description:{
+    description: {
       type: GraphQLString
     },
-    type:{
+    type: {
       type: new GraphQLNonNull(GraphQLString)
     }
   }),
 
-  interfaces:[Node]
+  interfaces: [Node]
 });
 
 let UserType = new GraphQLObjectType({
@@ -72,44 +72,44 @@ let UserType = new GraphQLObjectType({
     name: {
       type: GraphQLString
     },
-    surname:{
+    surname: {
       type: GraphQLString
     },
-    age:{
+    age: {
       type: GraphQLInt
     },
-    hobbies:{
+    hobbies: {
       type: new GraphQLList(HobbyType),
       description: 'The ships used by the faction.'
     },
-    friends:{
-      type:new GraphQLList(UserType)
+    friends: {
+      type: new GraphQLList(UserType)
     },
-    type:{
+    type: {
       type: new GraphQLNonNull(GraphQLString)
     }
   }),
 
-  interfaces:[Node]
+  interfaces: [Node]
 });
 
-let nodeField =  {
-  name:'Node',
-  type:Node,
-  description:'A node interface field',
-  args:{
-    id:{
-      type:new GraphQLNonNull(GraphQLID),
-      description:'Id of node interface'
+let nodeField = {
+  name: 'Node',
+  type: Node,
+  description: 'A node interface field',
+  args: {
+    id: {
+      type: new GraphQLNonNull(GraphQLID),
+      description: 'Id of node interface'
     }
   },
   resolve: (obj, {id}) => {
-    return User.getUserById(obj, {id:id})
+    return User.getUserById(obj, {id: id})
       .then((user) => {
-        return user ? user : Hobby.getHobbyById(obj, {id:id});
-    }).then((hobby) => {
-          return hobby;
-    });
+        return user ? user : Hobby.getHobbyById(obj, {id: id});
+      }).then((hobby) => {
+        return hobby;
+      });
   }
 };
 
@@ -149,84 +149,92 @@ let HobbyQueries = {
 };
 
 let UserMutations = {
-  addUser:{
-    type:UserType,
+  addUser: {
+    type: UserType,
     args: {
-      name:{
-        name:'name',
-        type:new GraphQLNonNull(GraphQLString)
-      },
-      surname:{
-        name:'surname',
+      name: {
+        name: 'name',
         type: new GraphQLNonNull(GraphQLString)
       },
-      age:{
-        name:'age',
+      surname: {
+        name: 'surname',
+        type: new GraphQLNonNull(GraphQLString)
+      },
+      age: {
+        name: 'age',
         type: GraphQLInt
+      },
+      hobbies: {
+        name: 'hobbies',
+        type: new GraphQLList(GraphQLID)
+      },
+      friends: {
+        name: 'friends',
+        type: new GraphQLList(GraphQLID)
       }
     },
-    resolve: User.saveNewUser,
-    resolveType:UserType
+    resolve: User.addUser,
+    resolveType: UserType
   },
-  updateUser:{
-    type:UserType,
+  updateUser: {
+    type: UserType,
     args: {
-      id:{
-        name:'id',
-        type:GraphQLID
+      id: {
+        name: 'id',
+        type: GraphQLID
       },
-      name:{
-        name:'name',
-        type:GraphQLString
-      },
-      surname:{
-        name:'surname',
+      name: {
+        name: 'name',
         type: GraphQLString
       },
-      age:{
-        name:'age',
+      surname: {
+        name: 'surname',
+        type: GraphQLString
+      },
+      age: {
+        name: 'age',
         type: GraphQLInt
       }
     },
     resolve: User.updateUser,
-    resolveType:UserType
+    resolveType: UserType
   }
 };
 
 let HobbyMutations = {
-  addHobby:{
-    type:HobbyType,
+  addHobby: {
+    type: HobbyType,
     args: {
-      title:{
-        name:'title',
-        type:new GraphQLNonNull(GraphQLString)
+      title: {
+        name: 'title',
+        type: new GraphQLNonNull(GraphQLString)
       },
-      description:{
-        name:'description',
+      description: {
+        name: 'description',
         type: new GraphQLNonNull(GraphQLString)
       }
     },
     resolve: Hobby.addHobby,
-    resolveType:HobbyType
+    resolveType: HobbyType
   },
-  updateHobby:{
-    type:HobbyType,
+  updateHobby: {
+    type: HobbyType,
     args: {
-      id:{
+      id: {
         name: 'id',
         type: new GraphQLNonNull(GraphQLID)
       },
-      title:{
-        name:'title',
-        type:GraphQLString
+      title: {
+        name: 'title',
+        type: GraphQLString
       },
-      description:{
-        name:'description',
+      description: {
+        name: 'description',
         type: GraphQLString
       }
     },
     resolve: Hobby.updateHobby,
-    resolveType:HobbyType
+    resolveType: HobbyType
   }
 };
 
