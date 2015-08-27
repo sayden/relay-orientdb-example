@@ -17,6 +17,8 @@ You can find some scripts in the package.json:
 * `npm run print-instrospection` the same than above but with introspection.
 * `npm run populate` will fill with mock data your MongoDB using mongoose.
 
+> Disclaimer: Info contained in the population script could not be accurate
+
 ## The schema
 The schema we will use is the following (you can print it too using `npm run print-schema`):
 

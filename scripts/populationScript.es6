@@ -33,7 +33,7 @@ let hobbySleeping = new Hobby({
 let userRichard = new User({
   name:"Richard",
   surname:"Stallman",
-  age:30,
+  age:62,
   hobbies:[hobbyCycling, hobbyFlying],
   type:"user"
 });
@@ -41,7 +41,7 @@ let userRichard = new User({
 let userDonald = new User({
   name:"Donald",
   surname:"Knuth",
-  age:26,
+  age:77,
   hobbies:[hobbyHorses, hobbySleeping],
   type:"user"
 });
@@ -49,7 +49,7 @@ let userDonald = new User({
 let userLinus = new User({
   name:"Linux",
   surname:"Torvalds",
-  age:8,
+  age:45,
   hobbies:[hobbySleeping],
   type:"user"
 });
@@ -57,10 +57,18 @@ let userLinus = new User({
 let userTim = new User({
   name:"Tim",
   surname:"Berners-Lee",
-  age:2,
+  age:60,
   hobbies:[hobbySleeping, hobbyHorses],
   friends:[userRichard, userDonald],
   type:"user"
+});
+
+let userMark = new User({
+  name: "Mark",
+  surname: "Zuckerberg",
+  age:31,
+  hobbies: [hobbyCycling, hobbyFlying],
+  friends: [userDonald, userLinus]
 });
 
 userDonald.friends = [userRichard, userTim, userLinus];
@@ -76,6 +84,7 @@ userRichard.save();
 userDonald.save();
 userLinus.save();
 userTim.save();
+userMark.save();
 
 
 setTimeout(function() {
