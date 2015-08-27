@@ -206,7 +206,26 @@ let HobbyMutations = {
         type: new GraphQLNonNull(GraphQLString)
       }
     },
-    resolve: Hobby.saveNewHobby,
+    resolve: Hobby.addHobby,
+    resolveType:HobbyType
+  },
+  updateHobby:{
+    type:HobbyType,
+    args: {
+      id:{
+        name: 'id',
+        type: new GraphQLNonNull(GraphQLID)
+      },
+      title:{
+        name:'title',
+        type:GraphQLString
+      },
+      description:{
+        name:'description',
+        type: GraphQLString
+      }
+    },
+    resolve: Hobby.updateHobby,
     resolveType:HobbyType
   }
 };
@@ -230,7 +249,8 @@ let RootMutation = new GraphQLObjectType({
   fields: () => ({
     addUser: UserMutations.addUser,
     updateUser: UserMutations.updateUser,
-    addHobby: HobbyMutations.addHobby
+    addHobby: HobbyMutations.addHobby,
+    updateHobby: HobbyMutations.updateHobby
   })
 });
 
