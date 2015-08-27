@@ -4,3 +4,4 @@ npm-debug.log
 .idea
 data/printedIntrospection.*
 data/printedSchema.*
+data/schema.json
