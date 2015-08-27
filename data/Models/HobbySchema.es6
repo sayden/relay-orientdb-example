@@ -7,4 +7,28 @@ var HobbySchema = new mongoose.Schema({
   type: String
 });
 
-module.exports = mongoose.model('Hobby', HobbySchema);
+let Hobby = mongoose.model('Hobby', HobbySchema);
+
+module.exports = Hobby;
+
+module.exports.getHobbyById = (id) => {
+  return new Promise((resolve, reject) => {
+    Hobby.findById(id).exec((err, res) => {
+      if (res == null) {
+        Hobby.findById(id).exec((err, res) => {
+          err ? reject(err) : resolve(res);
+        });
+      } else {
+        reject(new Error(`Search result for id ${id} was null`));
+      }
+    })
+  });
+};
+
+module.exports.getListOfHobbies = () => {
+  return new Promise((resolve, reject) => {
+    Hobby.find({}).exec((err, res) => {
+      err ? reject(err) : resolve(res);
+    });
+  });
+};
