@@ -1,7 +1,6 @@
 import User from './Models/UserSchema.es6';
 import Hobby from './Models/HobbySchema.es6';
 
-// schema.js
 import {
   GraphQLObjectType,
   GraphQLSchema,
@@ -12,11 +11,6 @@ import {
   GraphQLString,
   GraphQLInt
   } from 'graphql';
-
-import {
-  connectionArgs,
-  connectionDefinitions
-  } from 'graphql-relay';
 
 
 let Node = new GraphQLInterfaceType({
