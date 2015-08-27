@@ -67,14 +67,18 @@ userDonald.friends = [userRichard, userTim, userLinus];
 userRichard.friends = [userDonald, userTim, userLinus];
 userLinus.friends = [userRichard, userDonald];
 
-if(true){
-  hobbyCycling.save();
-  hobbyFlying.save();
-  hobbyHorses.save();
-  hobbySleeping.save();
+hobbyCycling.save();
+hobbyFlying.save();
+hobbyHorses.save();
+hobbySleeping.save();
 
-  userRichard.save();
-  userDonald.save();
-  userLinus.save();
-  userTim.save();
-}
+userRichard.save();
+userDonald.save();
+userLinus.save();
+userTim.save();
+
+
+setTimeout(function() {
+  console.log(userRichard._id);
+  mongoose.disconnect();
+}, 1000);
