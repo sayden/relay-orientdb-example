@@ -120,13 +120,7 @@ let UserQueries = {
     type: new GraphQLList(UserType),
     name: 'users',
     description: 'A user list',
-    resolve: () => {
-      return new Promise((resolve, reject) => {
-        User.find({}).populate('hobbies friends').exec((err, res) => {
-          err ? reject(err) : resolve(res);
-        });
-      });
-    }
+    resolve: User.getListOfUsers
   },
   user: {
     type: UserType,
@@ -135,14 +129,7 @@ let UserQueries = {
         type: GraphQLID
       }
     },
-    resolve: (root, {id}) => {
-      return new Promise((resolve, reject) => {
-        //User is a Mongoose schema
-        User.findById(id).populate('hobbies friends').exec((err, res) => {
-          err ? reject(err) : resolve(res);
-        });
-      });
-    }
+    resolve: User.getUserById
   }
 };
 
@@ -154,28 +141,12 @@ let HobbyQueries = {
         type: GraphQLID
       }
     },
-    resolve: (root, {id}) => {
-      console.log('Running hobby query');
-      return new Promise((resolve, reject) => {
-        //Hobby is a Mongoose schema
-        Hobby.findById(id).exec((err, res) => {
-          err ? reject(err) : resolve(res);
-        });
-      });
-    }
+    resolve: Hobby.getUserById
   },
 
   hobbies: {
     type: new GraphQLList(HobbyType),
-    resolve: () => {
-      console.log('Running hobbies query');
-      return new Promise((resolve, reject) => {
-        Hobby.find({}).exec((err, res) => {
-          res = res;
-          err ? reject(err) : resolve(res);
-        });
-      });
-    }
+    resolve: Hobby.getListOfHobbies
   }
 };
 

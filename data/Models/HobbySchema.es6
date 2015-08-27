@@ -11,7 +11,7 @@ let Hobby = mongoose.model('Hobby', HobbySchema);
 
 module.exports = Hobby;
 
-module.exports.getHobbyById = (id) => {
+module.exports.getHobbyById = (root, {id}) => {
   return new Promise((resolve, reject) => {
     Hobby.findById(id).exec((err, res) => {
       if (res == null) {

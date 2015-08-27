@@ -18,7 +18,7 @@ let User = mongoose.model('User', UserSchema);
 
 module.exports = User;
 
-module.exports.getUserById = (id) => {
+module.exports.getUserById = (root, {id}) => {
   return new Promise((resolve, reject) => {
     User.findById(id).exec((err, res) => {
       err ? reject(err) : resolve(res);
