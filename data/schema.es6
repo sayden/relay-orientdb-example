@@ -28,7 +28,7 @@ let Node = new GraphQLInterfaceType({
       description: 'The global unique ID of an object'
     },
     type: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       description: "The type of the object"
     }
   }),
