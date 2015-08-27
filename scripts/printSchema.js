@@ -9,11 +9,10 @@ import graphql from 'graphql';
 
 import Schema from '../data/schema.es6';
 
-async () =>
-{
+async() => {
   var result = await(printSchema(Schema));
 
-  if(result.errors){
+  if (result.errors) {
     console.error('ERROR: ', JSON.stringify(result.errors, null, 2));
   } else {
     console.log(result);

@@ -1,7 +1,7 @@
 class Friend extends React.Component {
   render() {
     let friend = this.props.friend;
-    return(
+    return (
       <li>
         {friend.name} {friend.surname} ({friend.age})
       </li>

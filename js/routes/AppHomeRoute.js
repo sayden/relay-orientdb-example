@@ -9,7 +9,7 @@ class AppHomeRoute extends Relay.Route {
     `
   };
 
-  static paramDefinitions = { userId: {required: true} };
+  static paramDefinitions = {userId: {required: true}};
   static routeName = 'AppHomeRoute';
 }
 

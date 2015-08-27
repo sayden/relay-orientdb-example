@@ -4,7 +4,8 @@ import AppHomeRoute from './routes/AppHomeRoute';
 React.render(
   <Relay.RootContainer
     Component={User}
-    route={new AppHomeRoute({userId: "55dece1e663b117c31b87294"})}
+    //TODO Update userId
+    route={new AppHomeRoute({userId: "55df44ba8b56b74b143f5084"})}
   />,
   document.getElementById('root')
 );

@@ -4,7 +4,7 @@ import FriendsList from './FriendsList.js';
 class User extends React.Component {
   render() {
     var user = this.props.user;
-    
+
     return (
       <div>
         <h1>Hello {user.name} {user.surname}</h1>

@@ -1,14 +1,14 @@
 class Hobby extends React.Component {
   render() {
     let hobby = this.props.hobby;
-    return(
+    return (
       <li>
         {hobby.title}
         <ul>
           <li>Description: {hobby.description}</li>
         </ul>
       </li>
-      );
+    );
   }
 }
 
