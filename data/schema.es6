@@ -101,16 +101,11 @@ let nodeField =  {
     }
   },
   resolve: (obj, {id}) => {
-    return new Promise((resolve, reject) => {
-        User.findById(id).exec((err, res) => {
-          if (res == null){
-            Hobby.findById(id).exec((err, res) => {
-              err ? reject(err) : resolve(res);
-            });
-          } else {
-            err ? reject(err) : resolve(res);
-          }
-        });
+    return User.getUserById(obj, {id:id})
+      .then((user) => {
+        return user ? user : Hobby.getHobbyById(obj, {id:id});
+    }).then((hobby) => {
+          return hobby;
     });
   }
 };
@@ -141,7 +136,7 @@ let HobbyQueries = {
         type: GraphQLID
       }
     },
-    resolve: Hobby.getUserById
+    resolve: Hobby.getHobbyById
   },
 
   hobbies: {
@@ -167,15 +162,7 @@ let UserMutations = {
         type: GraphQLInt
       }
     },
-    resolve: (root, {name, surname, age}) => {
-      var newUser = new User({name:name, surname:surname, age:age});
-
-      return new Promise((resolve, reject) => {
-        newUser.save((err, res) => {
-          err ? reject(err): resolve(res);
-        });
-      });
-    },
+    resolve: User.saveNewUser,
     resolveType:UserType
   },
   updateUser:{
@@ -198,19 +185,7 @@ let UserMutations = {
         type: GraphQLInt
       }
     },
-    resolve: (root, {name, surname, age, id}) => {
-      let modify = {};
-      name ? modify.name = name : null;
-      surname ? modify.surname = surname : null;
-      age ? modify.age = age : null;
-      return new Promise((resolve, reject) => {
-        User.update({id:id}, modify, (err, res) =>{
-          User.findOne({id:id}, (err, res) => {
-            err ? reject(err): resolve(res);
-          });
-        });
-      });
-    },
+    resolve: User.updateUser,
     resolveType:UserType
   }
 };
@@ -228,15 +203,7 @@ let HobbyMutations = {
         type: new GraphQLNonNull(GraphQLString)
       }
     },
-    resolve: (root, {title, description}) => {
-      var newHobby = new Hobby({title:title, description:description});
-
-      return new Promise((resolve, reject) => {
-        newHobby.save((err, res) => {
-          err ? reject(err): resolve(res);
-        });
-      });
-    },
+    resolve: Hobby.saveNewHobby,
     resolveType:HobbyType
   }
 };
