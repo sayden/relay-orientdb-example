@@ -1,7 +1,13 @@
 import mongoose from 'mongoose';
 
 var HobbySchema = new mongoose.Schema({
-  id: { type:String, required:true, unique:true, index:true, default:mongoose.Types.ObjectId },
+  id: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true,
+    default: mongoose.Types.ObjectId
+  },
   title: String,
   description: String,
   type: String
@@ -9,7 +15,7 @@ var HobbySchema = new mongoose.Schema({
 
 let Hobby = mongoose.model('Hobby', HobbySchema);
 
-exports.Hobby = Hobby;
+exports.HobbySchema = Hobby;
 
 exports.getHobbyById = (root, {id}) => {
   return new Promise((resolve, reject) => {
@@ -29,11 +35,11 @@ exports.getListOfHobbies = () => {
 
 
 exports.addHobby = (obj, {title, description}) => {
-  var newHobby = new Hobby({title:title, description:description});
+  var newHobby = new Hobby({title: title, description: description});
 
   return new Promise((resolve, reject) => {
     newHobby.save((err, res) => {
-      err ? reject(err): resolve(res);
+      err ? reject(err) : resolve(res);
     });
   });
 };
@@ -44,12 +50,12 @@ exports.updateHobby = (root, {title, description, id}) => {
   description ? modify.description = description : null;
 
   return new Promise((resolve, reject) => {
-    Hobby.update({id:id}, modify, (err, res) =>{
-      if(err){
+    Hobby.update({id: id}, modify, (err, res) => {
+      if (err) {
         reject(err)
       } else {
-        Hobby.find({id:id}, (err, res) => {
-          err || res.length != 1 ? reject(err): resolve(res[0]);
+        Hobby.find({id: id}, (err, res) => {
+          err || res.length != 1 ? reject(err) : resolve(res[0]);
         });
       }
     });
