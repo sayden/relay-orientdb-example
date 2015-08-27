@@ -3,10 +3,7 @@ class Friend extends React.Component {
     let friend = this.props.friend;
     return(
       <li>
-        {friend.title}
-        <ul>
-          <li>{friend.description}</li>
-        </ul>
+        {friend.name} {friend.surname} ({friend.age})
       </li>
     );
   }
@@ -15,9 +12,10 @@ class Friend extends React.Component {
 export default Relay.createContainer(Friend, {
   fragments: {
     friend: () => Relay.QL`
-      fragment on Friend {
-        title
-        description
+      fragment on User {
+        name
+        surname
+        age
       }`
   }
 });

@@ -82,6 +82,9 @@ let UserType = new GraphQLObjectType({
       type: new GraphQLList(HobbyType),
       description: 'The ships used by the faction.'
     },
+    friends:{
+      type:new GraphQLList(UserType)
+    },
     type:{
       type: new GraphQLNonNull(GraphQLString)
     }

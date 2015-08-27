@@ -5,7 +5,7 @@ class Hobby extends React.Component {
       <li>
         {hobby.title}
         <ul>
-          <li>{hobby.description}</li>
+          <li>Description: {hobby.description}</li>
         </ul>
       </li>
       );

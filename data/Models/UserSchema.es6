@@ -20,7 +20,7 @@ exports.User = User;
 
 exports.getUserById = (root, {id}) => {
   return new Promise((resolve, reject) => {
-    User.findById(id).exec((err, res) => {
+    User.findById(id).populate('hobbies friends').exec((err, res) => {
       err ? reject(err) : resolve(res);
     })
   });

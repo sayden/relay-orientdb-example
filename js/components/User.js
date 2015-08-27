@@ -1,4 +1,5 @@
 import HobbyList from './HobbyList.js';
+import FriendsList from './FriendsList.js';
 
 class User extends React.Component {
   render() {
@@ -8,9 +9,9 @@ class User extends React.Component {
       <div>
         <h1>Hello {user.name} {user.surname}</h1>
         <h2>Hobbies</h2>
-        <ul>
-        <HobbyList hobbies={user} />
-        </ul>
+        <HobbyList user={user} />
+        <h2>Friends</h2>
+        <FriendsList user={user} />
         <h2>Age: {user.age}</h2>
       </div>
     );
@@ -25,7 +26,8 @@ export default Relay.createContainer(User, {
         name
         surname
         age
-        ${HobbyList.getFragment('hobbies')}
+        ${HobbyList.getFragment('user')}
+        ${FriendsList.getFragment('user')}
       }
     `
   }
