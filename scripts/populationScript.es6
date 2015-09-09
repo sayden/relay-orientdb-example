@@ -67,18 +67,6 @@ let userMark = {
 userDonald.friends = [userRichard, userTim, userLinus];
 userRichard.friends = [userDonald, userTim, userLinus];
 userLinus.friends = [userRichard, userDonald];
-/*
-hobbyCycling.save();
-hobbyFlying.save();
-hobbyHorses.save();
-hobbySleeping.save();
-
-userRichard.save();
-userDonald.save();
-userLinus.save();
-userTim.save();
-userMark.save();
-*/
 
 function createVerticesAndEdges (){
   let UserVertexPromise = db.class.create('User', 'V')
@@ -139,10 +127,11 @@ function createUsers(usersArray) {
     userVertices.map(userVertex => {
       let user = usersArray.filter(user => user.name == userVertex.name);
       user.hobbies.map(hobby => {
-        db.create('EDGE', 'Hobby').set({
-          title:hobby.title,
-          description:hobby.description
-        }).then(res => {
+        db.create('EDGE', 'Hobby'); //TODO
+      });
+
+      user.friends.map(hobby => {
+        db.create('EDGE', 'Follows').then(res => { //TODO
           console.log(res);
         });
       });
