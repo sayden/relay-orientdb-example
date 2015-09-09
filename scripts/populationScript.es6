@@ -1,80 +1,73 @@
-import mongoose from 'mongoose';
-
-import {UserSchema as User } from '../data/Models/UserSchema.es6';
-import {HobbySchema as Hobby } from '../data/Models/HobbySchema.es6';
-
-mongoose.connect('mongodb://localhost/test');
-
-let hobbyCycling = new Hobby({
+let hobbyCycling = {
   title: 'cycling',
   description: 'a painful sport',
   type: "hobby"
-});
+};
 
-let hobbyHorses = new Hobby({
+let hobbyHorses = {
   title: 'horses',
   description: 'to get in one with an animal',
   type: "hobby"
-});
+};
 
-let hobbyFlying = new Hobby({
+let hobbyFlying = {
   title: 'flying',
   description: 'man and machine in one',
   type: "hobby"
-});
+};
 
-let hobbySleeping = new Hobby({
+let hobbySleeping = {
   title: 'sleeping',
   description: 'resting for whole day',
   type: "hobby"
-});
+};
 
 
-let userRichard = new User({
+let userRichard = {
   name: "Richard",
   surname: "Stallman",
   age: 62,
   hobbies: [hobbyCycling, hobbyFlying],
   type: "user"
-});
+};
 
-let userDonald = new User({
+let userDonald = {
   name: "Donald",
   surname: "Knuth",
   age: 77,
   hobbies: [hobbyHorses, hobbySleeping],
   type: "user"
-});
+};
 
-let userLinus = new User({
+let userLinus = {
   name: "Linux",
   surname: "Torvalds",
   age: 45,
   hobbies: [hobbySleeping],
   type: "user"
-});
+};
 
-let userTim = new User({
+let userTim = {
   name: "Tim",
   surname: "Berners-Lee",
   age: 60,
   hobbies: [hobbySleeping, hobbyHorses],
   friends: [userRichard, userDonald],
   type: "user"
-});
+};
 
-let userMark = new User({
+let userMark = {
   name: "Mark",
   surname: "Zuckerberg",
   age: 31,
   hobbies: [hobbyCycling, hobbyFlying],
   friends: [userDonald, userLinus]
-});
+};
 
 userDonald.friends = [userRichard, userTim, userLinus];
 userRichard.friends = [userDonald, userTim, userLinus];
 userLinus.friends = [userRichard, userDonald];
-
+/*
 hobbyCycling.save();
 hobbyFlying.save();
 hobbyHorses.save();
@@ -85,9 +78,74 @@ userDonald.save();
 userLinus.save();
 userTim.save();
 userMark.save();
+*/
 
+function createVerticesAndEdges (){
+  let UserVertexPromise = db.class.create('User', 'V')
+    .then( User => {
+      return User.property.create({
+        name: 'name',
+        type: 'string'
+      },{
+          name: 'surname',
+          type:'string'
+        },{
+          name:'age',
+          type:'int'
+        },{
+          name:'type',
+          type:'string'
+        }
+      );
+  });
 
-setTimeout(function () {
-  console.log(userRichard._id);
-  mongoose.disconnect();
-}, 1000);
+  let HobbyVertexPromise = db.class.create('Hobby', 'V')
+    .then( User => {
+      return User.property.create({
+          name: 'title',
+          type: 'string'
+        },{
+          name: 'description',
+          type:'string'
+        },{
+          name:'type',
+          type:'string'
+        }
+      );
+    });
+
+  let LikesEdgePromise = db.class.create('Likes', 'E');
+  let FollowsEdgePromise = db.class.create('Follows', 'E');
+
+  return Promise.all(UserVertexPromise, HobbyVertexPromise,
+    LikesEdgePromise, FollowsEdgePromise);
+}
+
+createVerticesAndEdges().then(res => {
+  createUsers([userRichard, userDonald, userLinus, userTim, userMark]);
+});
+
+function createUsers(usersArray) {
+  let usersPromises = usersArray.map(user => {
+    return db.create('VERTEX', 'User').set({
+      name:user.name,
+      surname:user.surname,
+      age:user.age,
+      type:user.type
+    });
+  });
+
+  usersPromises.then(userVertices => {
+    userVertices.map(userVertex => {
+      let user = usersArray.filter(user => user.name == userVertex.name);
+      user.hobbies.map(hobby => {
+        db.create('EDGE', 'Hobby').set({
+          title:hobby.title,
+          description:hobby.description
+        }).then(res => {
+          console.log(res);
+        });
+      });
+    });
+  })
+}
