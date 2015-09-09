@@ -1,3 +1,16 @@
+import OrientDB from 'orientjs';
+
+let db;
+let dbName = "jsTest";
+
+let server = OrientDB({
+  host: 'localhost',
+  port: 2424,
+  username: 'root',
+  password: '1234'
+});
+
+/* HOBBIES */
 let hobbyCycling = {
   title: 'cycling',
   description: 'a painful sport',
@@ -22,7 +35,7 @@ let hobbySleeping = {
   type: "hobby"
 };
 
-
+/* USERS */
 let userRichard = {
   name: "Richard",
   surname: "Stallman",
@@ -68,6 +81,7 @@ userDonald.friends = [userRichard, userTim, userLinus];
 userRichard.friends = [userDonald, userTim, userLinus];
 userLinus.friends = [userRichard, userDonald];
 
+
 function createVerticesAndEdges (){
   let UserVertexPromise = db.class.create('User', 'V')
     .then( User => {
@@ -105,13 +119,35 @@ function createVerticesAndEdges (){
   let LikesEdgePromise = db.class.create('Likes', 'E');
   let FollowsEdgePromise = db.class.create('Follows', 'E');
 
-  return Promise.all(UserVertexPromise, HobbyVertexPromise,
-    LikesEdgePromise, FollowsEdgePromise);
+  return Promise.all([UserVertexPromise, HobbyVertexPromise,
+    LikesEdgePromise, FollowsEdgePromise]);
 }
 
-createVerticesAndEdges().then(res => {
-  createUsers([userRichard, userDonald, userLinus, userTim, userMark]);
-});
+function getVertexRid (where) {
+  return db
+    .select()
+    .from('V')
+    .where(where)
+    .column('rid')
+    .one();
+}
+
+function makeEdge (fromV, edge, toV) {
+  let fromRid;
+  let toRid;
+
+  getVertexRid(fromV)
+    .then(rid => {
+      fromRid = parseRidResponse(rid);
+      return getVertexRid(toV);
+    }).then(rid => {
+      toRid = parseRidResponse(rid);
+      return db.create('EDGE', edge)
+        .from(fromRid)
+        .to(toRid)
+        .one();
+    }).then(function (edge) {   console.log('created edge:', edge);   });
+}
 
 function createUsers(usersArray) {
   let usersPromises = usersArray.map(user => {
@@ -123,18 +159,49 @@ function createUsers(usersArray) {
     });
   });
 
-  usersPromises.then(userVertices => {
+  Promise.all(usersPromises).then(userVertices => {
     userVertices.map(userVertex => {
       let user = usersArray.filter(user => user.name == userVertex.name);
       user.hobbies.map(hobby => {
-        db.create('EDGE', 'Hobby'); //TODO
+        makeEdge({name:user.name}, 'Likes', {title:hobby.title});
       });
 
-      user.friends.map(hobby => {
-        db.create('EDGE', 'Follows').then(res => { //TODO
-          console.log(res);
-        });
+      user.friends.map(friend => {
+        makeEdge({name:user.name}, 'Likes', {name:friend.name});
       });
     });
   })
 }
+
+function parseRidResponse (ridResponse){
+  return "#" + ridResponse.cluster + ":" + ridResponse.position;
+}
+
+
+server.exist(dbName)
+  .then(exists => {
+    if (exists) {
+      return server.drop(dbName);
+    } else {
+      return Promise.resolve(true);
+    }
+}).then(res => {
+    return server.create({
+      name: dbName,
+      type: 'graph',
+      storage: 'plocal'
+    });
+}).then(_db => {
+  db = _db;
+  console.log('database created or connection established');
+  return createVerticesAndEdges();
+}).then(res => {
+  console.log('vertices created');
+  return createUsers([userRichard, userDonald, userLinus, userTim, userMark]);
+}).then(res => {
+  console.log('users created. script finished');
+    db.close();
+  server.close();
+}).catch(err => {
+  console.log(err);
+});
