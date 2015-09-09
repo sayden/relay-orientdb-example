@@ -74,7 +74,8 @@ let userMark = {
   surname: "Zuckerberg",
   age: 31,
   hobbies: [hobbyCycling, hobbyFlying],
-  friends: [userDonald, userLinus]
+  friends: [userDonald, userLinus],
+  type:"user"
 };
 
 userDonald.friends = [userRichard, userTim, userLinus];
@@ -82,9 +83,10 @@ userRichard.friends = [userDonald, userTim, userLinus];
 userLinus.friends = [userRichard, userDonald];
 
 
-function createVerticesAndEdges (){
+function createVerticesAndEdgesClasses (){
   let UserVertexPromise = db.class.create('User', 'V')
     .then( User => {
+      console.log('Class User created');
       return User.property.create({
         name: 'name',
         type: 'string'
@@ -102,8 +104,9 @@ function createVerticesAndEdges (){
   });
 
   let HobbyVertexPromise = db.class.create('Hobby', 'V')
-    .then( User => {
-      return User.property.create({
+    .then( Hobby => {
+      console.log('Class Hobby created');
+      return Hobby.property.create({
           name: 'title',
           type: 'string'
         },{
@@ -124,8 +127,10 @@ function createVerticesAndEdges (){
 }
 
 function getVertexRid (where) {
+  console.log('Searching', where);
+
   return db
-    .select()
+    .select('@rid')
     .from('V')
     .where(where)
     .column('rid')
@@ -136,48 +141,74 @@ function makeEdge (fromV, edge, toV) {
   let fromRid;
   let toRid;
 
-  getVertexRid(fromV)
-    .then(rid => {
-      fromRid = parseRidResponse(rid);
-      return getVertexRid(toV);
+  return getVertexRid(fromV)
+      .then(rid => {
+        console.log("from", rid);
+        fromRid = parseRidResponse(rid);
+        return getVertexRid(toV);
+
     }).then(rid => {
-      toRid = parseRidResponse(rid);
-      return db.create('EDGE', edge)
-        .from(fromRid)
-        .to(toRid)
-        .one();
-    }).then(function (edge) {   console.log('created edge:', edge);   });
+        console.log("to", rid);
+        toRid = parseRidResponse(rid);
+        console.log(`Creating an edge: ${fromRid} ${edge} ${toRid}` );
+
+        return db.create('EDGE', edge)
+          .from(fromRid)
+          .to(toRid)
+          .one();
+    }).then(edge => {
+      console.log('Edge created');
+    });
+}
+
+function createEdges(usersArray, userVertices){
+  userVertices.map(userVertex => {
+    console.log(userVertex.name, userVertex["@rid"]);
+
+    let user = usersArray.filter(user => user.name == userVertex.name)[0];
+
+    user.hobbies.map(hobby => {
+      makeEdge({name:user.name}, 'Likes', {title:hobby.title}).then(console.log);
+    });
+
+    user.friends.map(friend => {
+      makeEdge({name:user.name}, 'Likes', {name:friend.name}).then(console.log);
+    });
+  });
+}
+
+function createHobbies(hobbiesArray){
+  let hobbiesPromises = hobbiesArray.map(hobby => {
+    return db.create('VERTEX', 'Hobby').set({
+      title:hobby.title,
+      description:hobby.description,
+      type:hobby.type
+    }).one();
+  });
+
+  return Promise.all(hobbiesPromises);
 }
 
 function createUsers(usersArray) {
+  console.log('Going to create ' + usersArray.length + ' vertices');
+
   let usersPromises = usersArray.map(user => {
     return db.create('VERTEX', 'User').set({
       name:user.name,
       surname:user.surname,
       age:user.age,
       type:user.type
-    });
+    }).one();
   });
 
-  Promise.all(usersPromises).then(userVertices => {
-    userVertices.map(userVertex => {
-      let user = usersArray.filter(user => user.name == userVertex.name);
-      user.hobbies.map(hobby => {
-        makeEdge({name:user.name}, 'Likes', {title:hobby.title});
-      });
-
-      user.friends.map(friend => {
-        makeEdge({name:user.name}, 'Likes', {name:friend.name});
-      });
-    });
-  })
+  return Promise.all(usersPromises);
 }
 
 function parseRidResponse (ridResponse){
   return "#" + ridResponse.cluster + ":" + ridResponse.position;
 }
 
-
+let userVertices;
 server.exist(dbName)
   .then(exists => {
     if (exists) {
@@ -194,12 +225,18 @@ server.exist(dbName)
 }).then(_db => {
   db = _db;
   console.log('database created or connection established');
-  return createVerticesAndEdges();
+  return createVerticesAndEdgesClasses();
 }).then(res => {
-  console.log('vertices created');
-  return createUsers([userRichard, userDonald, userLinus, userTim, userMark]);
+    console.log('classes created');
+    return createUsers([userRichard, userDonald, userLinus, userTim, userMark]);
+  }).then(_userVertices => {
+    userVertices = _userVertices;
+    return createHobbies([hobbyCycling,hobbyFlying,hobbyHorses,hobbySleeping]);
+  }).then(userHobbies => {
+    console.log('users and hobbies created. Creating edges');
+    createEdges([userRichard, userDonald, userLinus, userTim, userMark], userVertices)
 }).then(res => {
-  console.log('users created. script finished');
+  console.log('edges created. script finished');
     db.close();
   server.close();
 }).catch(err => {
