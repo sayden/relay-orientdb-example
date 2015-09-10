@@ -27,7 +27,11 @@ let Singleton = (() => {
     closeConnection: () => {
       instance.close();
       server.close();
-    }
+    },
+
+    parseRidResponse: ridResponse => {
+    return "#" + ridResponse.cluster + ":" + ridResponse.position;
+  }
   };
 })();
 

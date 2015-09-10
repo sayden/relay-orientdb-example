@@ -7,14 +7,14 @@ let db = OrientDbSingleton.getInstance();
 exports.UserSchema = null; //FIXME
 
 exports.getUserById = (root, {id}) => {
-  let a = db.query('SELECT @rid AS id, name, age, surname, type FROM User WHERE @rid=:id', {params:{id:id}, limit:1});
-  return new Promise((resolve, reject) => {
-    a.then(res => {
-      console.log(res);
-      return resolve(res);
-    })
-  });
-  //return db.record.get(id);
+  return db.select()
+          .from('User')
+          .where({"@rid":id})
+          .transform(record => {
+            record.id = OrientDbSingleton.parseRidResponse(record["@rid"]);
+            return record;
+          })
+          .one();
 };
 
 exports.updateUser = (user) => {
