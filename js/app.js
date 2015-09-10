@@ -5,7 +5,7 @@ React.render(
   <Relay.RootContainer
     Component={User}
     //TODO Update userId
-    route={new AppHomeRoute({userId: "55df44ba8b56b74b143f5084"})}
+    route={new AppHomeRoute({userId: "#11:0"})}
   />,
   document.getElementById('root')
 );

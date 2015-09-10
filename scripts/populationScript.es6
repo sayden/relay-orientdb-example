@@ -142,8 +142,6 @@ function makeEdge (fromV, edge, toV) {
   let fromRid;
   let toRid;
 
-  //console.log (fromV, edge, toV);
-
   return getVertexRid(fromV)
       .then(rid => {
         fromRid = parseRidResponse(rid);

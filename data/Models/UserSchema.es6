@@ -1,35 +1,20 @@
-import mongoose from 'mongoose';
+import OrientDbSingleton from '../OrientDbSingleton.es6';
 
-import Hobby from './HobbySchema.es6';
+let db = OrientDbSingleton.getInstance();
 
-let UserSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-    index: true,
-    default: mongoose.Types.ObjectId
-  },
-  name: String,
-  surname: String,
-  age: Number,
-  hobbies: [{type: mongoose.Schema.Types.ObjectId, ref: 'Hobby'}],
-  friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-  type: String
-});
+//import Hobby from './HobbySchema.es6';
 
-UserSchema.set('toJSON', {getters: true});
-
-let User = mongoose.model('User', UserSchema);
-
-exports.UserSchema = User;
+exports.UserSchema = null; //FIXME
 
 exports.getUserById = (root, {id}) => {
+  let a = db.query('SELECT @rid AS id, name, age, surname, type FROM User WHERE @rid=:id', {params:{id:id}, limit:1});
   return new Promise((resolve, reject) => {
-    User.findById(id).populate('hobbies friends').exec((err, res) => {
-      err ? reject(err) : resolve(res);
+    a.then(res => {
+      console.log(res);
+      return resolve(res);
     })
   });
+  //return db.record.get(id);
 };
 
 exports.updateUser = (user) => {
@@ -41,11 +26,7 @@ exports.updateUser = (user) => {
 };
 
 exports.getListOfUsers = () => {
-  return new Promise((resolve, reject) => {
-    User.find({}).populate('hobbies friends').exec((err, res) => {
-      err ? reject(err) : resolve(res);
-    });
-  });
+  return db.select().from("User").all();
 };
 
 exports.addUser = (root, {name, surname, age, hobbies, friends}) => {

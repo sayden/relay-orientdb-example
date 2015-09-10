@@ -1,36 +1,15 @@
-import mongoose from 'mongoose';
+import OrientDbSingleton from '../OrientDbSingleton.es6';
 
-var HobbySchema = new mongoose.Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-    index: true,
-    default: mongoose.Types.ObjectId
-  },
-  title: String,
-  description: String,
-  type: String
-});
+let db = OrientDbSingleton.getInstance();
 
-let Hobby = mongoose.model('Hobby', HobbySchema);
-
-exports.HobbySchema = Hobby;
+exports.HobbySchema = null; //FIXME
 
 exports.getHobbyById = (root, {id}) => {
-  return new Promise((resolve, reject) => {
-    Hobby.findById(id).exec((err, res) => {
-      err ? reject(err) : resolve(res);
-    })
-  });
+  return db.record.get(id);
 };
 
 exports.getListOfHobbies = () => {
-  return new Promise((resolve, reject) => {
-    Hobby.find({}).exec((err, res) => {
-      err ? reject(err) : resolve(res);
-    });
-  });
+  return db.select().from("Hobby").all();
 };
 
 
