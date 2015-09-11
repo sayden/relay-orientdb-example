@@ -32,24 +32,27 @@ var json = {
 };
 
 function parseResponse(object){
-
   function parse(object){
-    Object.keys(object).forEach(key => {
-      var val = object[key];
-      if(key == "@rid"){
-        object.id = val;
-        delete object["@rid"];
-      } else {
-        if(val instanceof Array){
-          // console.log(val);
-          val.apply(this, parse);
-          // console.log(temp);
+    if (!(object instanceof Array)){
+      object = [object];
+    }
+
+    object.map(object => {
+      return Object.keys(object).forEach(key => {
+        var val = object[key];
+        if(key == "@rid"){
+          object.id = val;
+          delete object["@rid"];
+        } else {
+          if(val instanceof Array){
+             parse(val);
+          }
         }
-      }
+      });
     });
   }
 
-  let res = parse(object);
+  parse(object);
   console.log(object);
 }
 
