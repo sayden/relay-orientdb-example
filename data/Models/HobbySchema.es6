@@ -5,14 +5,14 @@ let db = OrientDbSingleton.getInstance();
 exports.HobbySchema = null; //FIXME
 
 exports.getHobbyById = (root, {id}) => {
-  return db.select()
+  return db.select('title, description, @rid')
     .from('Hobby')
     .where({"@rid":id})
     .transform(record => {
-      record.id = OrientDbSingleton.parseRidResponse(record["@rid"]);
+      OrientDbSingleton.renameRids(record);
       return record;
     })
-    .one()
+    .one();
 };
 
 exports.getListOfHobbies = () => {

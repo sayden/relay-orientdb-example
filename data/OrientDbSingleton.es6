@@ -29,10 +29,41 @@ let Singleton = (() => {
       server.close();
     },
 
-    parseRidResponse: ridResponse => {
-    return "#" + ridResponse.cluster + ":" + ridResponse.position;
+    renameRids: object => {
+      return renameRids(object);
+    }
   }
-  };
 })();
+
+function parseRidResponse (ridResponse) {
+  return "#" + ridResponse.cluster + ":" + ridResponse.position;
+}
+
+/**
+ * Rename every @rid field in the response to RID
+ * @param object
+ * @returns {*}
+ */
+function renameRids (object) {
+  if (object instanceof Array) {
+    for (let i = 0; i < object.length; i++) {
+      parsePlainJson(object[i]);
+    }
+  } else {
+    parsePlainJson(object);
+  }
+  function parsePlainJson(json) {
+    Object.keys(json).forEach(key => {
+      if (key == "@rid") {
+        json.id = parseRidResponse(json[key]);
+        delete json[key];
+      } else if (json[key] instanceof Array) {
+        renameRids(json[key]);
+      }
+    })
+  }
+
+  return object;
+}
 
 export default Singleton;

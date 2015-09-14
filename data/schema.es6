@@ -72,7 +72,7 @@ let UserType = new GraphQLObjectType({
     age: {
       type: GraphQLInt
     },
-    hobbies: {
+    likes: {
       type: new GraphQLList(HobbyType),
       description: 'The ships used by the faction.'
     },
@@ -239,7 +239,7 @@ let RootQuery = new GraphQLObjectType({
     user: UserQueries.user,
     users: UserQueries.users,
     hobby: HobbyQueries.hobby,
-    hobbies: HobbyQueries.hobbies,
+    likes: HobbyQueries.hobbies,
     node: nodeField
   })
 });

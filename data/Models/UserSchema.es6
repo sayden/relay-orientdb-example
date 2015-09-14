@@ -6,27 +6,16 @@ let db = OrientDbSingleton.getInstance();
 
 exports.UserSchema = null; //FIXME
 
-function renameRids(object){
-  if(object )
-}
-
 exports.getUserById = (root, {id}) => {
-  let query = db.select('name, surname, age, type, out("Likes") as likes, out("Follows") as friends')
+  return db.select('name, surname, age, type, out("Likes") as likes, out("Follows") as friends')
           .from('User')
           .where({"@rid":id})
           .fetch({likes:0, friends:0})
           .transform(record => {
-            record.id = OrientDbSingleton.parseRidResponse(record["@rid"]);
+            OrientDbSingleton.renameRids(record);
             return record;
           })
           .one();
-
-  return new Promise((resolve, reject) => {
-    query.then(res => {
-      console.log(res);
-      resolve(res);
-    })
-  })
 };
 
 exports.updateUser = (user) => {
@@ -38,7 +27,14 @@ exports.updateUser = (user) => {
 };
 
 exports.getListOfUsers = () => {
-  return db.select().from("User").all();
+  return db.select('name, surname, age, type, out("Likes") as likes, out("Follows") as friends')
+    .from('User')
+    .fetch({likes:0, friends:0})
+    .transform(record => {
+      OrientDbSingleton.renameRids(record);
+      return record;
+    })
+    .all();
 };
 
 exports.addUser = (root, {name, surname, age, hobbies, friends}) => {
